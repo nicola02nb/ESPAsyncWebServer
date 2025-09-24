@@ -596,13 +596,11 @@ void AsyncWebServerRequest::_parseMultipartPostByte(uint8_t data, bool last) {
       if (!_itemIsFile) {
         _params.emplace_back(_itemName, _itemValue, true);
       } else {
-        if (_itemSize) {
-          if (_handler) {
-            _handler->handleUpload(this, _itemFilename, _itemSize - _itemBufferIndex, _itemBuffer, _itemBufferIndex, true);
-          }
-          _itemBufferIndex = 0;
-          _params.emplace_back(_itemName, _itemFilename, true, true, _itemSize);
+        if (_handler) {
+          _handler->handleUpload(this, _itemFilename, _itemSize - _itemBufferIndex, _itemBuffer, _itemBufferIndex, true);
         }
+        _itemBufferIndex = 0;
+        _params.emplace_back(_itemName, _itemFilename, true, true, _itemSize);
         free(_itemBuffer);
         _itemBuffer = NULL;
       }
